@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Undangan Digital Premium - Nyebar.Id</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* Reset CSS Modern */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #2d3436;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Glowing Effect */
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 15px rgba(106, 17, 203, 0.15);
+            position: relative;
+            padding: 1rem;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            border-radius: 2px;
+        }
+
+        /* Form Konfirmasi Pesanan */
+        .order-form {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-form h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #6a11cb;
+            outline: none;
+            box-shadow: 0 0 8px rgba(106, 17, 203, 0.2);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        /* Gallery Grid Modern */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Card Design Premium */
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(106, 17, 203, 0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 3px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            border-color: #6a11cb;
+        }
+
+        .gallery-item .title {
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2c3e50;
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%);
+            position: relative;
+            text-align: center;
+        }
+
+        .title::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+        }
+
+        /* Hover Overlay Effect */
+        .gallery-item::before {
+            content: "Lihat Detail →";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(106, 17, 203, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 2;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .gallery-item img {
+                height: 120px;
+            }
+
+            .gallery-item .title {
+                font-size: 0.8rem;
+                padding: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+                padding: 0.5rem;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .gallery-item img {
+                height: 100px;
+            }
+
+            .gallery-item .title {
+                font-size: 0.75rem;
+                padding: 0.5rem;
+            }
+        }
+
+        /* Loader Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-item {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        /* Animasi delay untuk 32 item */
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+        .gallery-item:nth-child(7) { animation-delay: 0.7s; }
+        .gallery-item:nth-child(8) { animation-delay: 0.8s; }
+        .gallery-item:nth-child(9) { animation-delay: 0.9s; }
+        .gallery-item:nth-child(10) { animation-delay: 1s; }
+        .gallery-item:nth-child(11) { animation-delay: 1.1s; }
+        .gallery-item:nth-child(12) { animation-delay: 1.2s; }
+        .gallery-item:nth-child(13) { animation-delay: 1.3s; }
+        .gallery-item:nth-child(14) { animation-delay: 1.4s; }
+        .gallery-item:nth-child(15) { animation-delay: 1.5s; }
+        .gallery-item:nth-child(16) { animation-delay: 1.6s; }
+        .gallery-item:nth-child(17) { animation-delay: 1.7s; }
+        .gallery-item:nth-child(18) { animation-delay: 1.8s; }
+        .gallery-item:nth-child(19) { animation-delay: 1.9s; }
+        .gallery-item:nth-child(20) { animation-delay: 2s; }
+        .gallery-item:nth-child(21) { animation-delay: 2.1s; }
+        .gallery-item:nth-child(22) { animation-delay: 2.2s; }
+        .gallery-item:nth-child(23) { animation-delay: 2.3s; }
+        .gallery-item:nth-child(24) { animation-delay: 2.4s; }
+        .gallery-item:nth-child(25) { animation-delay: 2.5s; }
+        .gallery-item:nth-child(26) { animation-delay: 2.6s; }
+        .gallery-item:nth-child(27) { animation-delay: 2.7s; }
+        .gallery-item:nth-child(28) { animation-delay: 2.8s; }
+        .gallery-item:nth-child(29) { animation-delay: 2.9s; }
+        .gallery-item:nth-child(30) { animation-delay: 3s; }
+        .gallery-item:nth-child(31) { animation-delay: 3.1s; }
+        .gallery-item:nth-child(32) { animation-delay: 3.2s; }
+    </style>
+</head>
+<body>
+    <!-- Form Konfirmasi Pesanan -->
+    <div class="order-form">
+        <h2>📝 Konfirmasi Pemesanan</h2>
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="template">Pilih Template:</label>
+                <select id="template" name="template" required>
+                    <option value="">-- Pilih Template --</option>
+                    <option value="Undangan 1 - Floral 4">Floral 4</option>
+                    <option value="Undangan 2 - Floral 1">Floral 1</option>
+<option value="Undangan 3 - Traditional 4">Traditional 4</option>
+<option value="Undangan 4 - Traditional 3">Traditional 3</option>
+<option value="Undangan 5 - Traditional 2">Traditional 2</option>
+<option value="Undangan 6 - Floral 3">Floral 3</option>
+<option value="Undangan 7 - Minimalist 5">Minimalist 5</option>
+<option value="Undangan 8 - Minimalist 4">Minimalist 4</option>
+<option value="Undangan 9 - Floral 5">Floral 5</option>
+<option value="Undangan 10 - Traditional 1">Traditional 1</option>
+<option value="Undangan 11 - Elegant 1">Elegant 1</option>
+<option value="Undangan 12 - Minimalist 3">Minimalist 3</option>
+<option value="Undangan 13 - Minimalist 2">Minimalist 2</option>
+<option value="Undangan 14 - Minimalist 1">Minimalist 1</option>
+<option value="Undangan 15 - Floral 6">Floral 6</option>
+<option value="Undangan 16 - Floral 2">Floral 2</option>
+<option value="Undangan 17 - Engagement 2">Engagement 2</option>
+<option value="Undangan 18 - Engagement 1">Engagement 1</option>
+<option value="Undangan 19 - luxury 2">luxury 2</option>
+<option value="Undangan 20 - luxury 1">luxury 1</option>
+<option value="Undangan 21 - Minimalist 12">Minimalist 12</option>
+<option value="Undangan 22 - Minimalist 11">Minimalist 11</option>
+<option value="Undangan 23 - Minimalist 10">Minimalist 10</option>
+<option value="Undangan 24 - Minimalist 9">Minimalist 9</option>
+<option value="Undangan 25 - Minimalist 8">Minimalist 8</option>
+<option value="Undangan 26 - Minimalist 7">Minimalist 7</option>
+<option value="Undangan 27 - Minimalist 6">Minimalist 6</option>
+<option value="Undangan 28 - Overlay shadow 3">Overlay shadow 3</option>
+<option value="Undangan 29 - Overlay shadow 2">Overlay shadow 2</option>
+<option value="Undangan 30 - Floral 9">Floral 9</option>
+<option value="Undangan 31 - Floral 8">Floral 8</option>
+<option value="Undangan 32 - Floral 7">Floral 7</option>
+<option value="Undangan 33 - Elegant 2">Elegant 2</option>
+<option value="Undangan 34 - Shadow 1">Shadow 1</option>
+<option value="Undangan 35 - Islamic 2">Islamic 2</option>
+<option value="Undangan 36 - Islamic 1">Islamic 1</option>
+<option value="Undangan 37 - Aqiqah 2">Aqiqah 2</option>
+<option value="Undangan 38 - Khitan">Khitan</option>
+                   
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">Nama Anda:</label>
+                <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">💌 Konfirmasi Pesanan</button>
+        </form>
+    </div>
+
+    <h1>Katalog Premium Nyebar.Id</h1>
+    <div class="gallery">
+        <!-- Item 1 sampai 32 -->
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-4" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-4.jpg" alt="Undangan 1">
+                <div class="title">Floral 4</div>
+            </a>
+        </div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-1.jpg" alt="Undangan 2">
+                <div class="title">Floral 1</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=traditional-4" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/traditional-4.jpg" alt="Undangan 2">
+                <div class="title">Traditional 4</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=traditional-3" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/traditional-3.jpg" alt="Undangan 2">
+                <div class="title">Traditional 3</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=traditional-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/traditional-2.jpg" alt="Undangan 2">
+                <div class="title">Traditional 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-3" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-3.jpg" alt="Undangan 2">
+                <div class="title">Floral 3</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-5" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-5.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 5</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-4" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-4.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 4</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-5" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-5.jpg" alt="Undangan 2">
+                <div class="title">Floral 5</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=traditional-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/traditional-1.jpg" alt="Undangan 2">
+                <div class="title">Traditional 1</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=elegant-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/elegant-1.jpg" alt="Undangan 2">
+                <div class="title">Elegant 1</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-3" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-3.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 3</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-2.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-1.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 1</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-6" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-6.jpg" alt="Undangan 2">
+                <div class="title">Floral 6</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-2.jpg" alt="Undangan 2">
+                <div class="title">Floral 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=engagement-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/engagement-2.jpg" alt="Undangan 2">
+                <div class="title">Engagement 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=engagement-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/engagement-1.jpg" alt="Undangan 2">
+                <div class="title">Engagement 1</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=luxury-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/luxury-2.jpg" alt="Undangan 2">
+                <div class="title">Luxury 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=luxury-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/luxury-1.jpg" alt="Undangan 2">
+                <div class="title">Luxury 1</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-12" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-12.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 12</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-11" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-11.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 11</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-10" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-10.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 10</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-9" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-9.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 9</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-8" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-8.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 8</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-7" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-7.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 7</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=minimalist-6" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/minimalist-6.jpg" alt="Undangan 2">
+                <div class="title">Minimalist 6</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=overlay-shadow-3" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/overlay-shadow-3.jpg" alt="Undangan 2">
+                <div class="title">Overlay shadow 3</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=overlay-shadow-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/overlay-shadow-2.jpg" alt="Undangan 2">
+                <div class="title">Overlay shadow 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-9" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-9.jpg" alt="Undangan 2">
+                <div class="title">Floral 9</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-8" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-8.jpg" alt="Undangan 2">
+                <div class="title">Floral 8</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=floral-7" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/floral-7.jpg" alt="Undangan 2">
+                <div class="title">Floral 7</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=elegant-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/elegant-2.jpg" alt="Undangan 2">
+                <div class="title">Elegant 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=overlay-shadow-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/overlay-shadow-1.jpg" alt="Undangan 2">
+                <div class="title">Shadow 1</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=islamic-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/islamic-2.jpg" alt="Undangan 2">
+                <div class="title">Islamic 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=islamic-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/islamic-1.jpg" alt="Undangan 2">
+                <div class="title">Islamic 1</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=aqiqah-2" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/aqiqah-2.jpg" alt="Undangan 2">
+                <div class="title">Aqiqah 2</div>
+            </a>
+</div>
+        <div class="gallery-item">
+            <a href="https://demo.invee.net/?template=khitan-1" target="_blank">
+                <img src="https://sgp1.vultrobjects.com/production-invee/templates/khitan-1.jpg" alt="Undangan 2">
+                <div class="title">Khitan</div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- SweetAlert JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Script untuk Form Konfirmasi Pesanan
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const template = document.getElementById('template').value;
+            const name = document.getElementById('name').value;
+            
+            if(!template || !name) {
+                Swal.fire('Oops...', 'Harap isi semua field!', 'error');
+                return;
+            }
+            
+            // Kirim ke WhatsApp Admin
+            const message = `Halo Nyebar.Id, saya mau pesan template:\n\n📌 Nama Template: ${template}\n👤 Nama Pemesan: ${name}`;
+            const whatsappUrl = `https://wa.me/6285162640797?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappUrl, '_blank');
+            
+            // Reset form
+            this.reset();
+            
+            // Notifikasi sukses
+            Swal.fire(
+                'Berhasil! 🎉',
+                'Konfirmasi pesanan telah dikirim ke admin',
+                'success'
+            );
+        });
+    </script>
+</body>
+</html>
