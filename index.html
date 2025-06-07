@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyebar.Id - Jasa Undangan Digital Premium</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* Reset CSS Modern */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #2d3436;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header dengan Gambar Pernikahan */
+        header {
+            background: linear-gradient(rgba(106, 17, 203, 0.8), rgba(37, 117, 252, 0.8)), 
+                        url('https://via.placeholder.com/1920x1080/6a11cb/2575fc?text=Background+Pernikahan') center/cover no-repeat;
+            color: #fff;
+            padding: 100px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            animation: fadeInDown 1.5s ease-in-out;
+        }
+
+        header p {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        /* Tombol dengan Efek Glow */
+        .btn {
+            background-color: #ff6f61;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .btn:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .btn:hover {
+            background-color: #ff4a3d;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 111, 97, 0.4);
+        }
+
+        /* Bagian Benefit dengan Card Animasi */
+        .benefits {
+            padding: 80px 20px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .benefits h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .benefit-item {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(106, 17, 203, 0.1), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .benefit-item:hover::before {
+            left: 100%;
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(106, 17, 203, 0.2);
+        }
+
+        .benefit-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #2575fc;
+        }
+
+        .benefit-item p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* Bagian Pricelist dengan Gradient dan Animasi */
+        .pricelist {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricelist h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .pricelist .promo {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #2c3e50;
+            padding: 30px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .pricelist .promo:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(106, 17, 203, 0.3);
+        }
+
+        .pricelist .promo h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .pricelist .promo .price {
+            font-size: 1.5rem;
+            color: #ff6f61;
+            font-weight: 700;
+        }
+
+        .pricelist .promo .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .pricelist .countdown {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        .pricelist .countdown span {
+            font-weight: 700;
+            color: #ff6f61;
+        }
+
+        /* Bagian CTA (Tombol) */
+        .cta-section {
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            text-align: center;
+        }
+
+        .cta-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-container h3 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .cta-container .btn {
+            font-size: 1.2rem;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ff6f61, #ff4a3d);
+            border: 2px solid white;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cta-container .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 111, 97, 0.4);
+        }
+
+        .cta-container p {
+            color: #666;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Footer dengan Gradient */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #ff6f61;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #ff4a3d;
+        }
+
+        /* Bubble Chat WhatsApp */
+        .whatsapp-bubble {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .whatsapp-bubble:hover {
+            background-color: #128c7e;
+            transform: scale(1.1);
+        }
+
+        .whatsapp-bubble img {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Animasi */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 3rem;
+            }
+
+            header p {
+                font-size: 1.2rem;
+            }
+
+            .benefit-item {
+                width: 45%;
+            }
+
+            .pricelist .promo {
+                width: 80%;
+            }
+
+            .cta-container h3 {
+                font-size: 1.5rem;
+            }
+
+            .cta-container .btn {
+                font-size: 1rem;
+                padding: 12px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .benefit-item {
+                width: 100%;
+            }
+
+            .pricelist .promo {
+                width: 100%;
+            }
+
+            .cta-container {
+                padding: 20px;
+            }
+
+            .cta-container h3 {
+                font-size: 1.3rem;
+            }
+
+            .cta-container .btn {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+            }
+
+            .whatsapp-bubble {
+                width: 50px;
+                height: 50px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .whatsapp-bubble img {
+                width: 25px;
+                height: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Nyebar.Id</h1>
+        <p>Jasa Undangan Digital Modern & Elegan</p>
+    </header>
+
+    <!-- Bagian Benefit -->
+<section class="benefits" id="benefit">
+    <h2>Kenapa Memilih Nyebar.Id?</h2>
+    <div class="benefit-item">
+        <h3>Desain Elegan & Modern</h3>
+        <p>Undangan didesain dengan elegan & berkesan.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Jumlah Tamu Tanpa Batasan</h3>
+        <p>Tidak ada biaya tambahan untuk berapapun tamu yang diundang.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Custom Nama Tamu</h3>
+        <p>Personalisasi undangan dengan nama tamu.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Akses Undangan dari Perangkat Apapun</h3>
+        <p>Akses undangan dari perangkat apapun dengan cepat.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>RSVP</h3>
+        <p>Estimasi jumlah kehadiran dari orang-orang yang kamu sayangi.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Amplop Digital</h3>
+        <p>Terima amplop/hadiah dari tamu secara digital via transfer atau e-money.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Wedding Wishes</h3>
+        <p>Biarkan undangan untuk membagikan kesan & pesan atau doa atas hari bahagiamu.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Navigasi Lokasi</h3>
+        <p>Permudah tamu undangan untuk menemukan lokasi acaramu.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Tambahkan Ke Kalender</h3>
+        <p>Biarkan tamu undanganmu menyimpan tanggal acaramu di Google Calendar mereka.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Background Music</h3>
+        <p>Perkuat kesan dari acara spesialmu dengan musik pilihanmu di undangan.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Galeri Foto</h3>
+        <p>Bagikan foto/video momen spesialmu dengan pasangan kepada para undangan.</p>
+    </div>
+    <div class="benefit-item">
+        <h3>Love Stories</h3>
+        <p>Ceritakan kisah cintamu kepada para undangan.</p>
+    </div>
+</section>
+
+    <!-- Bagian Pricelist Promo -->
+    <section class="pricelist">
+        <h2>Special Promo!</h2>
+        <div class="promo">
+            <h3>Undangan All Template</h3>
+            <p class="original-price">Rp 170.000</p>
+            <p class="price">Rp 150.000</p>
+            <div class="countdown">
+                Promo berakhir dalam: <span id="countdown">00:00:00</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bagian CTA (Tombol) -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h3>Pilih desain kamu!</h3>
+            <a href="galeri.html" class="btn">Lihat Katalog Lengkap</a>
+            <p>38 Template Eksklusif Tersedia</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 <a href="index.html" target="_blank">Nyebar.Id</a>. All Rights Reserved.</p>
+        <p>Designed with ❤️ by <a href="https://linktr.ee/ilhamnrllh" target="_blank">Ilhamnrllh</a></p>
+    </footer>
+
+    <!-- Bubble Chat WhatsApp -->
+    <a href="https://wa.me/6285162640797?text=Hallo%20Nyebar,%20aku%20mau%20tanya%20nih..." class="whatsapp-bubble" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon">
+    </a>
+
+    <!-- Script untuk Countdown -->
+    <script>
+        // Set waktu akhir countdown (24 jam dari sekarang)
+        const countdownTime = new Date().getTime() + 24 * 60 * 60 * 1000;
+
+        // Update countdown setiap 1 detik
+        const countdown = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countdownTime - now;
+
+            // Hitung jam, menit, dan detik
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Tampilkan countdown
+            document.getElementById('countdown').innerHTML =
+                `${String(Math.floor(hours)).padStart(2, '0')}:${String(Math.floor(minutes)).padStart(2, '0')}:${String(Math.floor(seconds)).padStart(2, '0')}`;
+
+            // Jika waktu habis, tampilkan pesan
+            if (distance < 0) {
+                clearInterval(countdown);
+                document.getElementById('countdown').innerHTML = "Promo telah berakhir!";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
